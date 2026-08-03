@@ -9,12 +9,10 @@ import (
 
 
 // Get request to scrape for HTML data from wikis. Needs inputs to be updated to be selctable later.
-func (c *Client) get(baseURL string) ([]byte, error) {
-    // URL update hardcoded for testing. Need to update to change based on user input later.
-    url := DustloopURL + "BBCF/" + "Kokonoe"
+func (c *Client) Fetch(url string) ([]byte, error) {
 
 	// Check to see if the URL is present inside the Cache
-    data, ok := c.cache.Get(url)
+    data, ok := c.Cache.Get(url)
 	if ok {
         return data, nil
  	}
@@ -34,7 +32,7 @@ func (c *Client) get(baseURL string) ([]byte, error) {
    	defer res.Body.Close()
 
    	// Check res.StatusCode. If it is above 299, return an error with code.
-    if res.StatusCode > 299 {
+    if res.StatusCode < 299 || res.StatusCode >= 300 {
    		return nil, fmt.Errorf("Response failed with statuscode: %d\n", res.StatusCode)
     }
 
@@ -45,7 +43,7 @@ func (c *Client) get(baseURL string) ([]byte, error) {
     }
 
 	// Add data from the request to the Cache.
-    c.cache.Add(url, data)
+    c.Cache.Add(url, data)
 
    	return data, nil
 }

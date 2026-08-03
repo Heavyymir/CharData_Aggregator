@@ -1,22 +1,34 @@
 package commands
 
-type cliCommand struct (
-	name			string
-	description		string
-	callback		func(config, ...string) error	
-)
+import "github.com/Heavyymir/CharData_Aggregator/config"
 
-func GetCommands() map[string]cliCommand {
-	return map[string]cliCommand {
+type CliCommand struct {
+	Name        string
+	Description string
+	Callback    func(*config.Config, ...string) error
+}
+
+func GetCommands() map[string]CliCommand {
+	return map[string]CliCommand{
 		"exit": {
-			name:			"exit",
-			description:	"command to exit CharData_Aggregator",
-			callback:		commandExit,
+			Name:        "exit",
+			Description: "command to exit CharData_Aggregator",
+			Callback:    commandExit,
 		},
 		"help": {
-			name:			"help",
-			description:	"displays information on commands usable in CharData_Aggregator",
-			callback:		commandHelp,
+			Name:        "help",
+			Description: "displays information on commands usable in CharData_Aggregator",
+			Callback:    commandHelp,
+		},
+		"select": {
+			Name: 		 "select",
+			Description: "selects a wiki and game",	
+			Callback:	 commandSelect,
+		},
+		"fetch": {
+			Name:		 "fetch",
+			Description: "fetches character data from a wiki",
+			Callback:	 commandFetch,
 		},
 	}
 }

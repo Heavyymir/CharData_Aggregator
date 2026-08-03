@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	
+	"github.com/Heavyymir/CharData_Aggregator/internal/CharDataCache"
 )
 
 // Temporary Client Struct, will move to internal API package later
@@ -15,7 +15,7 @@ type Client struct {
 
 func NewClient() *Client{
 	return &Client{
-		httpClient: http.Client{},
-		Cache: CharDataCache.Cache(5 * time.Second)
+		HttpClient: http.Client{},
+		Cache: CharDataCache.NewCache(5 * time.Second),
 	}
 } 
