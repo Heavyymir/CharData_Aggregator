@@ -27,7 +27,7 @@ var Wikis = map[string]Wiki{
 					Slug: "GGST", 
 					CharacterPath: "GGST/{character}",
 					},
-			"blazblueCF": {
+			"blazbluecf": {
 					Name: "Blazblue Centralfiction", 
 					Slug: "BBCF", 
 					CharacterPath: "BBCF/{character}",
