@@ -24,12 +24,12 @@ var Wikis = map[string]Wiki{
 		Games: map[string]Game{
 			"ggst": {
 					Name: "Guilty Gear Strive", 
-					Slug: "GGST", 
+					Slug: "ggst", 
 					CharacterPath: "GGST/{character}",
 					},
-			"blazbluecf": {
+			"bbcf": {
 					Name: "Blazblue Centralfiction", 
-					Slug: "BBCF", 
+					Slug: "bbcf", 
 					CharacterPath: "BBCF/{character}",
 					},
 			},
@@ -40,12 +40,12 @@ var Wikis = map[string]Wiki{
 		Games: map[string]Game{
 			"sf6": {
 					Name: "Street Fighter 6", 
-					Slug: "SF6", 
+					Slug: "sf6", 
 					CharacterPath: "Street_Fighter_6/{character}",
 			},
 			"3s":  {
 					Name: "Street Fighter III: 3rd Strike", 
-					Slug: "3S",
+					Slug: "3s",
 					CharacterPath: "Street_Fighter_3/{character}",
 			},
 		},

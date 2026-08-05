@@ -5,6 +5,10 @@ import (
 
     "github.com/Heavyymir/CharData_Aggregator/config"
     "github.com/Heavyymir/CharData_Aggregator/internal/api"
+    "github.com/Heavyymir/CharData_Aggregator/internal/parsers/bbcf"
+    //"github.com/Heavyymir/CharData_Aggregator/internal/parsers/ggst"
+    //"github.com/Heavyymir/CharData_Aggregator/internal/parsers/sf6"
+    //"github.com/Heavyymir/CharData_Aggregator/internal/parsers/sf3s"
 )
 
 
@@ -28,18 +32,42 @@ func commandFetch(cfg *config.Config, args ...string) error {
 		cfg.Game,
 		characterName,
 	)
-
 	if err != nil {
 		return err
 	}
 
+	fmt.Printf("Requesting: %s\n", requestURL)
+
+	// Get the URL for Parsing
 	data, err :=  cfg.CharDataClient.Fetch(requestURL)
 	if err != nil {
 		return err
 	}
 
+	fmt.Printf("Fetched %d bytes\n", len(data))
+	
+	// Switch case to handle parsers based on user inputed game
+	switch cfg.Game.Slug {
+		case "bbcf":
+			fmt.Println("using bbcf parser")
+			moves, err := bbcf.BBCFCharPageParser(data)
+			if err != nil {
+				return err
+			}
+			
+			fmt.Printf("Character: %s\n", characterName)
+			
+			if err := writeMovesJSON(characterName, moves); err != nil {
+				return err
+			}
+			
+		default:
+			return fmt.Errorf("no parser available for game: %s", cfg.Game.Name)
+	}
+	
 	// Return request data to the user so they can see it has been successful 
-	fmt.Printf("Fetched %d bytes from %s\n", len(data), requestURL)
+	fmt.Printf("fetched %d bytes from %s\n", len(data), requestURL)
 
 	return nil
 }
+

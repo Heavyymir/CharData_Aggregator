@@ -32,8 +32,8 @@ func (c *Client) Fetch(url string) ([]byte, error) {
    	defer res.Body.Close()
 
    	// Check res.StatusCode. If it is above 299, return an error with code.
-    if res.StatusCode < 299 || res.StatusCode >= 300 {
-   		return nil, fmt.Errorf("Response failed with statuscode: %d\n", res.StatusCode)
+    if res.StatusCode < 200 || res.StatusCode >= 300 {
+   		return nil, fmt.Errorf("response failed with statuscode: %d", res.StatusCode)
     }
 
 	// Read the HTTP Body. If empty, return an error.
