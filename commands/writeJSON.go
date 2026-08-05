@@ -14,12 +14,18 @@ import(
 func writeMovesJSON(character string, moves []bbcf.Move) error {
 	filename := safeFileName(character) + ".json"
 
-	data, err := json.MarshalIndent(moves, "", " ")
+	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 
-	if err := os.WriteFile(filename, data, 0644); err != nil {
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetEscapeHTML(false)
+	encoder.SetIndent("", " ")
+
+	if err := encoder.Encode(moves); err != nil {
 		return err
 	}
 

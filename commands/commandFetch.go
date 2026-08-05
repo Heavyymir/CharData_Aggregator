@@ -56,7 +56,9 @@ func commandFetch(cfg *config.Config, args ...string) error {
 			}
 			
 			fmt.Printf("Character: %s\n", characterName)
-			
+
+			printMoveTable(moves)
+				
 			if err := writeMovesJSON(characterName, moves); err != nil {
 				return err
 			}
