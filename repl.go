@@ -1,13 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/Heavyymir/CharData_Aggregator/commands"
 	"github.com/Heavyymir/CharData_Aggregator/config"
 	"github.com/Heavyymir/CharData_Aggregator/internal/api"
-	"os"
 	"strings"
+	"github.com/chzyer/readline"
 )
 
 func cleanInput(text string) []string {
@@ -16,31 +15,61 @@ func cleanInput(text string) []string {
 	return fields
 }
 
+
+// REPL for command line interaction
 func startRepl() {
 	cfg := config.Config{
 		CharDataClient: api.NewClient(),
 	}
-	scanner := bufio.NewScanner(os.Stdin)
-	for {
-		fmt.Print("CharData > ")
-		if !scanner.Scan() {
+
+	// Initialise the completer to handle tab completion of internal commands
+	completer := readline.NewPrefixCompleter(
+		readline.PcItem("help"),
+		readline.PcItem("select"),
+		readline.PcItem("fetch"),
+		readline.PcItem("exit"),
+	)
+
+	// Start the REPL
+	rl, err := readline.NewEx(&readline.Config{
+		Prompt:			"CharData > ",
+		AutoComplete:	completer, 
+	})
+	
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	
+	// Defer close of the initialised REPL loop
+	defer rl.Close()
+
+	// Initialise an infinate loop to continue the REPL until the Exit command is called
+	for{
+		text, err := rl.Readline()
+		if err != nil {
 			return
 		}
-		words := cleanInput(scanner.Text())
+
+		words := cleanInput(text)
 		if len(words) == 0 {
-			fmt.Println("Empty Command. Please use a valid command. Type 'help' for more information.")
+			fmt.Println("Empty Command. Please enter a valid command. Use command `help` for a list of valid commands")
 			continue
 		}
-		command, exists := commands.GetCommands()[words[0]]
-		if exists {
-			args := words[1:]
-			err := command.Callback(&cfg, args...)
-			if err != nil {
-				fmt.Println(err)
-			}
-		} else {
-			fmt.Println("Unknown command, please refer to 'help' for more information")
+	
+
+		if words[0] == "exit" {
+			return
 		}
-	}
-	return
+
+		command, exists := commands.GetCommands()[words[0]]
+		if !exists {
+			fmt.Println("Unknown command")
+			continue
+		}
+
+		if err := command.Callback(&cfg, words[1:]...); err != nil {
+			fmt.Println(err)
+		}
+	}	
 }
