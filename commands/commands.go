@@ -21,14 +21,19 @@ func GetCommands() map[string]CliCommand {
 			Callback:    commandHelp,
 		},
 		"select": {
-			Name: 		 "select",
-			Description: "selects a wiki and game",	
-			Callback:	 commandSelect,
+			Name:        "select",
+			Description: "selects a wiki and game",
+			Callback:    commandSelect,
 		},
 		"fetch": {
-			Name:		 "fetch",
+			Name:        "fetch",
 			Description: "fetches character data from a wiki",
-			Callback:	 commandFetch,
+			Callback:    commandFetch,
+		},
+		"discover": {
+			Name:        "discover",
+			Description: "Discovers playable characters for a selected game, and saves to a json",
+			Callback:    commandDiscover,
 		},
 	}
 }

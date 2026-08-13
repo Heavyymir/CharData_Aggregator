@@ -6,9 +6,10 @@ import (
 	"fmt"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/Heavyymir/CharData_Aggregator/internal/models"
 )
 
-func BBCFCharPageParser(data []byte) ([]Move, error) {
+func BBCFCharPageParser(data []byte) ([]models.Move, error) {
 
 	// Use goquery to create a readable datapoint from page HTML data
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(data))
@@ -17,15 +18,15 @@ func BBCFCharPageParser(data []byte) ([]Move, error) {
 	}
 
 	// Initialise a slice of Move structs
-	var moves []Move
+	var moves []models.Move
 	
 	headings := doc.Find("h3")
 	// Find all attack containers in the created doc
 	doc.Find(".attack-container").Each(func(i int, container *goquery.Selection) {
 		
 		// Initialise move struct maps/slices for elements
-		move := Move{
-			FrameData: make(map[string]Cell),
+		move := models.Move{
+			FrameData: make(map[string]models.Cell),
 			Headers: []string{},
 		}
 
@@ -100,13 +101,13 @@ func BBCFCharPageParser(data []byte) ([]Move, error) {
 }
 
 // Helper to parse goquery data
-func parseCell(cell *goquery.Selection) Cell {
+func parseCell(cell *goquery.Selection) models.Cell {
 	toolTip := strings.TrimSpace(cell.Find(".tooltiptext").Text())
 
 	visible := cell.Clone()
 	visible.Find(".tooltiptext").Remove()
 
-	return Cell{
+	return models.Cell{
 		Value:	strings.TrimSpace(visible.Text()),
 		Tooltip: toolTip,
 	}

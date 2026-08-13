@@ -4,8 +4,8 @@ package catalog
 
 // Define Game Elements
 type Game struct {
-	Name string
-	Slug string
+	Name          string
+	Slug          string
 	CharacterPath string
 }
 
@@ -23,30 +23,30 @@ var Wikis = map[string]Wiki{
 		URL:  DustloopURL,
 		Games: map[string]Game{
 			"ggst": {
-					Name: "Guilty Gear Strive", 
-					Slug: "ggst", 
-					CharacterPath: "GGST/{character}",
-					},
-			"bbcf": {
-					Name: "Blazblue Centralfiction", 
-					Slug: "bbcf", 
-					CharacterPath: "BBCF/{character}",
-					},
+				Name:          "Guilty Gear Strive",
+				Slug:          "ggst",
+				CharacterPath: "GGST/{character}",
 			},
+			"bbcf": {
+				Name:          "Blazblue Centralfiction",
+				Slug:          "bbcf",
+				CharacterPath: "BBCF/{character}",
+			},
+		},
 	},
 	"supercombo": {
 		Name: "SuperCombo",
 		URL:  SuperComboURL,
 		Games: map[string]Game{
 			"sf6": {
-					Name: "Street Fighter 6", 
-					Slug: "sf6", 
-					CharacterPath: "Street_Fighter_6/{character}",
+				Name:          "Street Fighter 6",
+				Slug:          "sf6",
+				CharacterPath: "Street_Fighter_6/{character}",
 			},
-			"3s":  {
-					Name: "Street Fighter III: 3rd Strike", 
-					Slug: "3s",
-					CharacterPath: "Street_Fighter_3/{character}",
+			"3s": {
+				Name:          "Street Fighter III: 3rd Strike",
+				Slug:          "3s",
+				CharacterPath: "Street_Fighter_3/{character}",
 			},
 		},
 	},

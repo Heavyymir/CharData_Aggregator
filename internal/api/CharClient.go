@@ -9,13 +9,13 @@ import (
 
 // Temporary Client Struct, will move to internal API package later
 type Client struct {
-        HttpClient      http.Client
-        Cache			*CharDataCache.Cache
+	HttpClient http.Client
+	Cache      *CharDataCache.Cache
 }
 
-func NewClient() *Client{
+func NewClient() *Client {
 	return &Client{
 		HttpClient: http.Client{},
-		Cache: CharDataCache.NewCache(5 * time.Second),
+		Cache:      CharDataCache.NewCache(5 * time.Second),
 	}
-} 
+}
