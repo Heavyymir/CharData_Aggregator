@@ -24,6 +24,9 @@ func DiscoveredChars(data []byte, gameSlug string) ([]models.Character, error) {
 		"Miscellaneous":      true,
 		"Tier_Lists":         true,
 		"Patch_Notes":        true,
+		"Getting_Started":	  true,
+		"Team_of_3":		  true,	
+		
 	}
 
 	if len(data) == 0 {

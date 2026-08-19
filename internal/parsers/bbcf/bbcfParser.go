@@ -3,8 +3,6 @@ package bbcf
 import (
 	"bytes"
 	"strings"
-	"fmt"
-
 	"github.com/PuerkitoBio/goquery"
 	"github.com/Heavyymir/CharData_Aggregator/internal/models"
 )
@@ -36,9 +34,6 @@ func BBCFCharPageParser(data []byte) ([]models.Move, error) {
 		input = strings.Join(strings.Fields(input), " ")
 		move.Input = input
 		
-		// Debug print
-		fmt.Printf("previous element: %q\n", strings.TrimSpace(container.Prev().Text()))
-		fmt.Printf("input for %s: %q\n", move.Name, move.Input)
 
 		// Find all of the framedatagridheaders in the doc
 		container.Find(".frameDataGridHeader > div").Each(func(_ int, cell *goquery.Selection) {
@@ -58,14 +53,14 @@ func BBCFCharPageParser(data []byte) ([]models.Move, error) {
 			heading := headings.Eq(i)
 			move.Name = strings.TrimSpace(heading.Text())		
 		}		
-
+		
 		// Find the framedata grid rows present in the Movecontainers. Map data for each row to a header. 
 		container.Find(".frameDataGridRow > div").Each(func(i int, cell *goquery.Selection) {
 				// if headers is shorter than the number of framedata rows, safetly return 
 				if i >= len(move.Headers) {
 					return
 				}
-
+				
 				// Parse the created goquery with the helper and assign the header data to move.FrameData
 				move.FrameData[move.Headers[i]] = parseCell(cell)	
 			})
@@ -86,7 +81,6 @@ func BBCFCharPageParser(data []byte) ([]models.Move, error) {
 		})
 
 		container.PrevAll().Filter("p").EachWithBreak(func(i int, p *goquery.Selection) bool {
-			fmt.Printf("previous p[%d]: %q\n", i, strings.TrimSpace(p.Text()))
 			return i < 5
 		})
 		

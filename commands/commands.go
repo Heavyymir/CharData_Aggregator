@@ -35,5 +35,15 @@ func GetCommands() map[string]CliCommand {
 			Description: "Discovers playable characters for a selected game, and saves to a json",
 			Callback:    commandDiscover,
 		},
+		"list": {
+			Name:		 "list",
+			Description: "Lists the Characters stored in the internal SQL database based on a selected game",
+			Callback:	 commandList,	
+		},
+		"frames": {
+			Name:		 "frames",
+			Description: "pulls framedata for a selected character and prints to console",
+			Callback:	 commandFrames,
+		},
 	}
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"database/sql"
 	"github.com/Heavyymir/CharData_Aggregator/catalog"
 	"github.com/Heavyymir/CharData_Aggregator/commands"
 	"github.com/Heavyymir/CharData_Aggregator/config"
@@ -11,9 +12,10 @@ import (
 )
 
 // REPL for command line interaction
-func startRepl() {
+func startRepl(db *sql.DB) {
 	cfg := config.Config{
 		CharDataClient: api.NewClient(),
+		DB:				db,
 	}
 
 	// Initialise the completer to handle tab completion of internal commands
