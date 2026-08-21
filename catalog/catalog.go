@@ -50,4 +50,16 @@ var Wikis = map[string]Wiki{
 			},
 		},
 	},
-}
+	"mizuumi": {
+		Name:	"Mizuumi",
+		URL:	MizuumiURL,
+		Games:	map[string]Game{
+			"uni2": {
+				Name:			"Under Night IN-BIRTH II Sys:Celes",
+				Slug:			"UNI2",
+				CharacterPath: 	"Under_Night_In-Birth/UNI2/{character}",
+			},
+		},
+	},
+}	
+

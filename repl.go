@@ -25,6 +25,7 @@ func startRepl(db *sql.DB) {
 		readline.PcItem("fetch"),
 		readline.PcItem("exit"),
 		readline.PcItem("discover"),
+		readline.PcItem("frames"),
 	)
 
 	// Start the REPL

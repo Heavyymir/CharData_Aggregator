@@ -2,6 +2,7 @@ package commands
 
 import(
 	"fmt"
+	"strings"
 
 	"github.com/Heavyymir/CharData_Aggregator/config"
 	"github.com/Heavyymir/CharData_Aggregator/internal/storage/sqlite"
@@ -37,12 +38,35 @@ func commandFrames(cfg *config.Config, args ...string) error {
 		return err
 	}
 
+	// Debug/Output
+	fmt.Printf("moves loaded: %d\n", len(moves))
+
+
+	// Print logic for SQL framedata grids
 	for _, move := range moves {
-		fmt.Printf("%s %s\n", move.Name, move.Input)
-		fmt.Println("--------------------------------------------------")
-		for _, header := range move.Headers {
-			fmt.Printf("%s: %s\n", header, move.FrameData[header].Value)
+		fmt.Printf("=== %s (%s) ===\n", move.Name, move.Input)
+		
+		for i, grid := range move.FrameDataGrids {
+			if i == 0 {
+				fmt.Println("[Base Frame Data]")
+			} else {
+				fmt.Printf("[Additional Data - Grid %d]\n", i)
+			}
+			printGrid(grid)
+			fmt.Println()
 		}
+			
+		if len(move.Notes) > 0 {
+			fmt.Println("Notes:")
+			for _, note := range move.Notes {
+				fmt.Printf("  • %s\n", note)
+			}
+			fmt.Println()
+		}
+
+		fmt.Println(strings.Repeat("=", 60))
 	}
+
 	return nil
+	
 }

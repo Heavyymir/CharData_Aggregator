@@ -51,46 +51,39 @@ func saveMove(tx *sql.Tx, characterID int64, move models.Move) (int64, error) {
 	if err != nil {
 		return 0, fmt.Errorf("get move ID: %w", err)
 	}
+	// Nested loops to pull values from HTML
+	for gridIndex, grid := range move.FrameDataGrids {
+		for rowIndex, row := range grid.Rows {
+			for position, cell := range row.Cells {
+				if position >= len(grid.Headers) {
+					continue
+				}
+	
+				property := grid.Headers[position]
 
-	seen := make(map[string]bool)
-
-	// Insert headers to the framedata data using position to maintain ordering and match to data
-	for position, property := range move.Headers {
-		if seen[property] {
-			return 0, fmt.Errorf(
-				"duplicate header %q in move %q",
-				property,
-				move.Name,
-			)
-		}
-
-		seen[property] = true
-
-		fmt.Printf("inserting: move=%q id=%q property=%q",
-			move.Name, moveID, property)
-
-		cell, ok := move.FrameData[property]
-		if !ok{
-			continue
-		}
-					
-		_, err := tx.Exec(`
-		INSERT INTO frame_data
-			(move_id, property, value, tooltip, position)
-		VALUES (?, ?, ?, ?, ?)
-		`,
-		moveID,
-		property,
-		cell.Value,
-		cell.Tooltip,
-		position,
-		)
-		if err != nil {
-			return 0, fmt.Errorf("save frame data: move=%q moveID=%q property=%q: %w", 
-			move.Name, moveID, property, err,
-			)
+	
+				_, err := tx.Exec(`
+					INSERT INTO frame_data
+					(move_id, grid_index, row_index, property, value, tooltip, position)
+					VALUES (?, ?, ?, ?, ?, ?, ?)
+				`,
+					moveID,
+					gridIndex,
+					rowIndex,
+					property,
+					cell.Value,
+					cell.Tooltip,
+					position,
+				)
+	
+				if err != nil {
+					return 0, fmt.Errorf(
+						"save frame data: %w", err,
+					)
+				}
+			}
 		}
 	}
-
-	return moveID, nil	
+	return moveID, nil
 }
+
